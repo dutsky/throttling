@@ -10,7 +10,7 @@ class Throttling extends Stream<bool> implements Sink<Function> {
 
   /// Set new duration
   set duration(Duration value) {
-    assert(duration is Duration && !duration.isNegative);
+    assert(!duration.isNegative);
     _duration = value;
   }
 
@@ -26,7 +26,7 @@ class Throttling extends Stream<bool> implements Sink<Function> {
   /// Have method [throttle]
   /// Must be closed with [close] method
   Throttling({Duration duration = const Duration(seconds: 1)})
-      : assert(duration is Duration && !duration.isNegative),
+      : assert(!duration.isNegative),
         _duration = duration {
     _stateSC.sink.add(true);
   }
@@ -48,9 +48,9 @@ class Throttling extends Stream<bool> implements Sink<Function> {
 
   @override
   StreamSubscription<bool> listen(
-    void onData(bool event)?, {
+    void Function(bool event)? onData, {
     Function? onError,
-    void onDone()?,
+    void Function()? onDone,
     bool? cancelOnError,
   }) =>
       _stateSC.stream.listen(
